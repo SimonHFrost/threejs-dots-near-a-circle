@@ -68,8 +68,16 @@
 	  // scale size by distance down page
 	  const size = 2 + ((15 + y) / 30) * 8
 
+	  // scale color by distance across page
+	  const red = (15 + x) / 30
+	  const color = new THREE.Color( red, 1, 0 );
+
 	  var dotGeometry = new THREE.Geometry();
-	  var dotMaterial = new THREE.PointsMaterial( { size: size, sizeAttenuation: false } );
+	  var dotMaterial = new THREE.PointsMaterial( {
+	    color: color,
+	    size: size,
+	    sizeAttenuation: false
+	  } );
 
 	  dotGeometry.vertices.push(new THREE.Vector3( x, y, 0));
 	  return dot = new THREE.Points( dotGeometry, dotMaterial );
