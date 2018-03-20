@@ -16,10 +16,11 @@ const radius = 10
 scene.add(createAmbientLight())
 scene.add(createDirectionalLight())
 
+let count = 0
+
 const createPoint = (x, y) => {
   // scale size by distance down page
   const size = 2 + ((15 + y) / 30) * 8
-  console.log(y, size)
 
   var dotGeometry = new THREE.Geometry();
   var dotMaterial = new THREE.PointsMaterial( { size: size, sizeAttenuation: false } );
@@ -29,6 +30,11 @@ const createPoint = (x, y) => {
 }
 
 setInterval(() => {
+  if (count >= 1000) {
+    console.log('finished')
+    return
+  }
+
   const randomX = 15 - Math.random() * 30
   const randomY = 15 - Math.random() * 30
 
@@ -36,6 +42,7 @@ setInterval(() => {
 
   if (distFromCenter > 9 && distFromCenter < 11) {
     const point = createPoint(randomX, randomY)
+    count++
     scene.add(point)
   }
-}, 1)
+}, 0.01)
