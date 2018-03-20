@@ -17,9 +17,14 @@ scene.add(createAmbientLight())
 scene.add(createDirectionalLight())
 
 const createPoint = (x, y) => {
+  // scale size by distance down page
+  const size = 2 + ((15 + y) / 30) * 8
+  console.log(y, size)
+
   var dotGeometry = new THREE.Geometry();
+  var dotMaterial = new THREE.PointsMaterial( { size: size, sizeAttenuation: false } );
+
   dotGeometry.vertices.push(new THREE.Vector3( x, y, 0));
-  var dotMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false } );
   return dot = new THREE.Points( dotGeometry, dotMaterial );
 }
 
@@ -33,4 +38,4 @@ setInterval(() => {
     const point = createPoint(randomX, randomY)
     scene.add(point)
   }
-}, 10)
+}, 1)
