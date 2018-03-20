@@ -28,4 +28,4 @@ setInterval(() => {
     cube.position.y = randomY
     scene.add(cube)
   }
-}, 50)
+}, 10)
