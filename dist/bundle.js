@@ -49,36 +49,49 @@
 	const initialize = __webpack_require__(2).initialize
 	const createAmbientLight = __webpack_require__(4).createAmbientLight
 	const createDirectionalLight = __webpack_require__(4).createDirectionalLight
-	const createSpaceship = __webpack_require__(4).createSpaceship
 	const createCube = __webpack_require__(4).createCube
 
 	const output = initialize()
 	const scene = output.scene
 
-	const loader = new THREE.JSONLoader()
+	const centerX = 0
+	const centerY = 0
 
-	const LOAD_MODEL = true
-
-	if (LOAD_MODEL) {
-	  let spaceship = null
-	  const modelPath = 'model/spaceship.json'
-
-	  function rotateSpaceship () {
-	    spaceship.rotation.y -= 0.01
-	  }
-
-	  loader.load(modelPath, geometry => {
-	    spaceship = createSpaceship(geometry)
-	    scene.add(spaceship)
-	  })
-
-	  window.setInterval(rotateSpaceship, 20)
-	} else {
-	  scene.add(createCube())
-	}
+	const radius = 10
 
 	scene.add(createAmbientLight())
 	scene.add(createDirectionalLight())
+
+	let count = 0
+
+	const createPoint = (x, y) => {
+	  // scale size by distance down page
+	  const size = 2 + ((15 + y) / 30) * 8
+
+	  var dotGeometry = new THREE.Geometry();
+	  var dotMaterial = new THREE.PointsMaterial( { size: size, sizeAttenuation: false } );
+
+	  dotGeometry.vertices.push(new THREE.Vector3( x, y, 0));
+	  return dot = new THREE.Points( dotGeometry, dotMaterial );
+	}
+
+	setInterval(() => {
+	  if (count >= 1000) {
+	    console.log('finished')
+	    return
+	  }
+
+	  const randomX = 15 - Math.random() * 30
+	  const randomY = 15 - Math.random() * 30
+
+	  const distFromCenter = Math.sqrt(randomX * randomX + randomY * randomY)
+
+	  if (distFromCenter > 9 && distFromCenter < 11) {
+	    const point = createPoint(randomX, randomY)
+	    count++
+	    scene.add(point)
+	  }
+	}, 0.01)
 
 
 /***/ },
@@ -46042,7 +46055,7 @@
 	  const renderer = new THREE.WebGLRenderer({
 	    antialias: true
 	  })
-	  renderer.setClearColor(new THREE.Color('lightblue'), 1)
+	  renderer.setClearColor(new THREE.Color('black'), 1)
 	  renderer.setSize(window.innerWidth, window.innerHeight)
 
 	  const containerComponent = document.getElementById('webgl')
@@ -46057,8 +46070,7 @@
 
 	function createCamera (renderer) {
 	  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000)
-	  camera.position.z = 5
-	  camera.position.y = 3
+	  camera.position.z = 30
 
 	  camera.lookAt(new THREE.Vector3(0, 0, 0))
 
@@ -47153,24 +47165,6 @@
 	  return directionalLight
 	}
 
-	function createSpaceship (geometry) {
-	  const material = new THREE.MeshLambertMaterial({
-	    color: '#ed8989',
-	    flatShading: true
-	  })
-
-	  const spaceship = new THREE.Mesh(
-	    geometry,
-	    material
-	  )
-
-	  spaceship.scale.x = 0.1
-	  spaceship.scale.y = 0.1
-	  spaceship.scale.z = 0.1
-
-	  return spaceship
-	}
-
 	function createCube () {
 	  const geometry = new THREE.BoxBufferGeometry( 1, 1, 1 )
 	  const material = new THREE.MeshLambertMaterial( { color: 0xED8989, flatShading: true } )
@@ -47181,7 +47175,6 @@
 	module.exports = {
 	  createAmbientLight,
 	  createDirectionalLight,
-	  createSpaceship,
 	  createCube
 	}
 
