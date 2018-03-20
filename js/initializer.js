@@ -4,9 +4,9 @@ const ORBIT_CONTROLS_ENABLED = true
 
 function createRenderer () {
   const renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    alpha: true
+    antialias: true
   })
+  renderer.setClearColor(new THREE.Color('black'), 1)
   renderer.setSize(window.innerWidth, window.innerHeight)
 
   const containerComponent = document.getElementById('webgl')
